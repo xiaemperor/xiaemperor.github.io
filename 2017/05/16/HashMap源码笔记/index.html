@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="马文侠的主页">
 <meta property="og:description" content="本文为jdk1.8源码。跟1.7最大的区别是引入了红黑树。1.8之前HashMap的数据结构为【数组-链表】  1.8之后增加了【数组-红黑树】默认在链表大于8时，转为红黑树结构 【默认值】初始化容量   12345 /*** 初始化容量。16* The default initial capacity - MUST be a power of two.*/ static final int DE">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-23T06:23:54.000Z">
+<meta property="og:updated_time" content="2017-11-23T06:49:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap源码笔记">
 <meta name="twitter:description" content="本文为jdk1.8源码。跟1.7最大的区别是引入了红黑树。1.8之前HashMap的数据结构为【数组-链表】  1.8之后增加了【数组-红黑树】默认在链表大于8时，转为红黑树结构 【默认值】初始化容量   12345 /*** 初始化容量。16* The default initial capacity - MUST be a power of two.*/ static final int DE">
@@ -372,6 +372,8 @@
 <li><p>【建议】当存入Map的数据量较大，并且预先知道大概数量时，应该指定其扩容大小，减少其resize()的次数</p>
 </li>
 </ul>
+<hr>
+<p>END</p>
 
       
     </div>
@@ -508,7 +510,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -519,7 +521,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

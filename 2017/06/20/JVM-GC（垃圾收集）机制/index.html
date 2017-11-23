@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="性能,JAVA基础,垃圾收集," />
+  <meta name="keywords" content="性能,垃圾收集,GC," />
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="垃圾收集机制 需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的Cla">
-<meta name="keywords" content="性能,JAVA基础,垃圾收集">
+<meta name="keywords" content="性能,垃圾收集,GC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM GC（垃圾收集）机制">
 <meta property="og:url" content="http://mawenxia.com/2017/06/20/JVM-GC（垃圾收集）机制/index.html">
 <meta property="og:site_name" content="马文侠的主页">
 <meta property="og:description" content="垃圾收集机制 需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-23T06:35:31.000Z">
+<meta property="og:updated_time" content="2017-11-23T06:51:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM GC（垃圾收集）机制">
 <meta name="twitter:description" content="垃圾收集机制 需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。">
@@ -293,6 +293,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA基础/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -339,10 +361,8 @@
 </li>
 <li><strong>引用的类型:</strong> 强引用；软引用；弱引用；虚引用。<ul>
 <li>经常使用的<code>String a = new String(&quot;abc&quot;)</code> 都为强引用，即使内存不够时，只要引用存在，都不会被清除，此时就报OutOfMemory。</li>
-<li>软引用 <code>SoftReference&lt;Bitmap&gt; softBitmap = new SoftReference&lt;Bitmap&gt;();</code> 该引用在内存不够的情况下会被强制清除。如在读取大量图片的应用场景中，如果每次读取图片都从硬盘读取，则会严重影响性能，但是如果全部加载到内存当中，又有可能造成内存溢出。此时就可以使用软引用的方式来存取图片。<ul>
+<li>软引用 <code>SoftReference&lt;Bitmap&gt; softBitmap = new SoftReference&lt;Bitmap&gt;();</code> 该引用在内存不够的情况下会被强制清除。如在读取大量图片的应用场景中，如果每次读取图片都从硬盘读取，则会严重影响性能，但是如果全部加载到内存当中，又有可能造成内存溢出。此时就可以使用软引用的方式来存取图片。</li>
 <li>弱引用。只要发生垃圾回收，都会被清除</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -367,9 +387,9 @@
           
             <a href="/tags/性能/" rel="tag"># 性能</a>
           
-            <a href="/tags/JAVA基础/" rel="tag"># JAVA基础</a>
-          
             <a href="/tags/垃圾收集/" rel="tag"># 垃圾收集</a>
+          
+            <a href="/tags/GC/" rel="tag"># GC</a>
           
         </div>
       
@@ -486,7 +506,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -497,7 +517,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
