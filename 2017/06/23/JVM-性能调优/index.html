@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="内存和GC原理 JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般">
+<meta name="description" content="内存结构和GC原理 GC机制 建议先了解JVM垃圾收集，点击进入 JVM GC JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清">
 <meta name="keywords" content="性能,JAVA基础">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM 性能调优">
 <meta property="og:url" content="http://mawenxia.com/2017/06/23/JVM-性能调优/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="内存和GC原理 JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3">
+<meta property="og:description" content="内存结构和GC原理 GC机制 建议先了解JVM垃圾收集，点击进入 JVM GC JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-e8e64d340df221d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-11-23T06:38:23.000Z">
+<meta property="og:updated_time" content="2017-11-23T06:44:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM 性能调优">
-<meta name="twitter:description" content="内存和GC原理 JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3">
+<meta name="twitter:description" content="内存结构和GC原理 GC机制 建议先了解JVM垃圾收集，点击进入 JVM GC JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -323,14 +323,14 @@
       
 
       
-        <h2 id="内存和GC原理"><a href="#内存和GC原理" class="headerlink" title="内存和GC原理"></a>内存和GC原理</h2><ul>
+        <h2 id="内存结构和GC原理"><a href="#内存结构和GC原理" class="headerlink" title="内存结构和GC原理"></a>内存结构和GC原理</h2><ul>
+<li><strong>GC机制</strong> 建议先了解JVM垃圾收集，点击进入 <a href="http://www.mawenxia.com/2017/06/20/JVM-GC%EF%BC%88%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%EF%BC%89%E6%9C%BA%E5%88%B6/" target="_blank" rel="noopener">JVM GC</a></li>
 <li><strong>JAVA内存结构</strong>  <em>堆</em>、<em>栈</em>、<em>永久区</em>、<em>程序计数器</em></li>
 <li><strong>一般需要优化的内存区为</strong>  <em>堆</em></li>
 <li><strong>堆内存的构成</strong>  <em>新生代</em>、<em>老年代</em><br><img src="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="堆内存结构"><br><em>新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3</em>  </li>
 </ul>
 <a id="more"></a>
-<pre><code>&gt; 有关GC（垃圾收集）机制，[点击此处](http://www.mawenxia.com/2017/06/20/JVM-GC%EF%BC%88%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%EF%BC%89%E6%9C%BA%E5%88%B6/)
-</code></pre><ol>
+<ol>
 <li>JAVA new出一个对象ObjectA时，若它特别大，直接进入 <em>老年代</em> ，其他都进入 <em>新生代</em> 中的<em>eden</em>。经过一次GC之后。若 <em>新生代</em><br>中的对象还有引用指向ObjectA。它将进入 <em>新生代</em> 中的<br><em>survivor0</em> 。第二次GC时，若还存在指向ObjectA的引用，ObjectA将复制到 <em>survivor1</em> ，并清空 <em>survivor0 </em>。 <strong>这就是GC原理中的 <em>复制模式</em>，保证了有连续完整的整块内存来接收每一次回收后幸存对象。</strong></li>
 <li>在 <em>新生代</em> 中经过好几次的GC之后还没有被回收的对象，将进入 <em>老年代</em></li>
 </ol>
@@ -575,7 +575,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存和GC原理"><span class="nav-number">1.</span> <span class="nav-text">内存和GC原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调优方式"><span class="nav-number">2.</span> <span class="nav-text">调优方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS-合理规范的代码及数据库的优化，也是性能优化的重要部分"><span class="nav-number">2.1.</span> <span class="nav-text">PS:合理规范的代码及数据库的优化，也是性能优化的重要部分</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存结构和GC原理"><span class="nav-number">1.</span> <span class="nav-text">内存结构和GC原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调优方式"><span class="nav-number">2.</span> <span class="nav-text">调优方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS-合理规范的代码及数据库的优化，也是性能优化的重要部分"><span class="nav-number">2.1.</span> <span class="nav-text">PS:合理规范的代码及数据库的优化，也是性能优化的重要部分</span></a></li></ol></li></ol></div>
             
 
           </div>
