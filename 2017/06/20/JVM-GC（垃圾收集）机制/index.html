@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="性能,JAVA基础,垃圾收集," />
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="技术就像存款,平时可能不用.但需要时,一定要有!">
-<meta property="og:type" content="website">
-<meta property="og:title" content="马文侠的主页">
-<meta property="og:url" content="http://mawenxia.com/archives/2017/index.html">
+<meta name="description" content="####垃圾收集机制  需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动">
+<meta name="keywords" content="性能,JAVA基础,垃圾收集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM GC（垃圾收集）机制">
+<meta property="og:url" content="http://mawenxia.com/2017/06/20/JVM-GC（垃圾收集）机制/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="技术就像存款,平时可能不用.但需要时,一定要有!">
+<meta property="og:description" content="####垃圾收集机制  需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。 垃圾收集算法：  Mark-Sweep 标记算法：">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-23T06:29:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="马文侠的主页">
-<meta name="twitter:description" content="技术就像存款,平时可能不用.但需要时,一定要有!">
+<meta name="twitter:title" content="JVM GC（垃圾收集）机制">
+<meta name="twitter:description" content="####垃圾收集机制  需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。 垃圾收集算法：  Mark-Sweep 标记算法：">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://mawenxia.com/archives/2017/"/>
+  <link rel="canonical" href="http://mawenxia.com/2017/06/20/JVM-GC（垃圾收集）机制/"/>
 
 
 
 
 
-  <title>归档 | 马文侠的主页</title>
+  <title>JVM GC（垃圾收集）机制 | 马文侠的主页</title>
   
 
 
@@ -143,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -237,259 +239,180 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2017/06/20/JVM-GC（垃圾收集）机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="马文侠">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=3c4e049cc1cec3fd8b3ea073eeb3b302/6159252dd42a2834b1c7cf5b59b5c9ea15cebf79.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="马文侠的主页">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">JVM GC（垃圾收集）机制</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-20T22:10:15+08:00">
+                2017-06-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 6 篇日志。 继续努力。
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/23/JVM-性能调优/" itemprop="url">
-              
-                <span itemprop="name">JVM 性能调优</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-23T20:22:39+08:00"
-              content="2017-06-23" >
-          06-23
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/20/JVM-GC（垃圾收集）机制/" itemprop="url">
-              
-                <span itemprop="name">JVM GC（垃圾收集）机制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-20T22:10:15+08:00"
-              content="2017-06-20" >
-          06-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/12/Spring-Cloud-常用模块代码及测试步骤/" itemprop="url">
-              
-                <span itemprop="name">Spring Cloud 常用模块代码及测试步骤</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-12T17:16:48+08:00"
-              content="2017-06-12" >
-          06-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>####垃圾收集机制</p>
+<ul>
+<li><strong>需要被收集的垃圾：</strong> 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。</li>
+<li><strong>回收规则：</strong> <strong><em>正向可达</em></strong> 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。</li>
+<li><strong>垃圾收集算法：</strong> <ul>
+<li>Mark-Sweep 标记算法：没有被引用的对象一一标记出来，GC运行时进行清除。<em>缺点：清除后内存不连续、碎片化。 空和不空的内存块互相间隔着，若有一个比较大的对象进入时，有可能找不到可以存下它的连续整块内存。这时会触发fullGC，全部回收，压缩，再存下新对象。影响效率。</em></li>
+<li>Copying 复制算法：内存被平成两个连续的区域。永远有一个内存区是空着的，回收被使用的一块内存时，直接把存活对象全部拷贝到空着的一块内存区中，并清空本内存区。内存复制的效率很高，并保证了内存块的连续性。<em>缺点：内存浪费，永远只能用一半。</em><blockquote>
+<p>java堆内存的 <em>新生代</em> 中垃圾收集时用的是复制算法。新生代分成了三块内存区：Eden、 Survivor0、Survivor1。GC运行时按正向可达规则将Eden中存活对象复制到S0内存块中，并清除当前内存块，下一次GC时，将S0和Eden中存活的对象复制到S1中，清除Eden和S0，如此往复。内存大小比例为8：1 : 1。 因为对象创建时最初存放于eden 而90%以上的对象往往在方法结束后被回收，留下的很少，故S0和S1比例可远小于Eden。 ps:堆内存的性能优化方式可参考：</p>
+<ul>
+<li>Mark-Compact 标记压缩 被标记的对象回收后，把存活对象压缩到一起，留下连续的内存块。<em>缺点：效率低于copy算法</em><br>java堆内存的 <em>老年代</em> 中垃圾收集时一般用的是标记压缩法。老年代中新产生的垃圾较少，但是堆积的垃圾可能很多，故标记压缩的在该内存块下效率不会太低，也保证了内存空间不浪费。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><strong>引用的类型:</strong> 强引用；软引用；弱引用；虚引用。<ul>
+<li>经常使用的<code>String a = new String(&quot;abc&quot;)</code> 都为强引用，即使内存不够时，只要引用存在，都不会被清除，此时就报OutOfMemory。</li>
+<li>软引用 <code>SoftReference&lt;Bitmap&gt; softBitmap = new SoftReference&lt;Bitmap&gt;();</code> 该引用在内存不够的情况下会被强制清除。如在读取大量图片的应用场景中，如果每次读取图片都从硬盘读取，则会严重影响性能，但是如果全部加载到内存当中，又有可能造成内存溢出。此时就可以使用软引用的方式来存取图片。<ul>
+<li>弱引用。只要发生垃圾回收，都会被清除</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>END</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/16/HashMap源码笔记/" itemprop="url">
-              
-                <span itemprop="name">HashMap源码笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-16T19:41:00+08:00"
-              content="2017-05-16" >
-          05-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/22/Spring源码导入IDEA/" itemprop="url">
-              
-                <span itemprop="name">Spring源码导入IDEA</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-22T16:58:59+08:00"
-              content="2017-02-22" >
-          02-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/01/16/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-01-16T19:41:00+08:00"
-              content="2017-01-16" >
-          01-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能/" rel="tag"># 性能</a>
+          
+            <a href="/tags/JAVA基础/" rel="tag"># JAVA基础</a>
+          
+            <a href="/tags/垃圾收集/" rel="tag"># 垃圾收集</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/12/Spring-Cloud-常用模块代码及测试步骤/" rel="next" title="Spring Cloud 常用模块代码及测试步骤">
+                <i class="fa fa-chevron-left"></i> Spring Cloud 常用模块代码及测试步骤
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/23/JVM-性能调优/" rel="prev" title="JVM 性能调优">
+                JVM 性能调优 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -497,6 +420,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -731,6 +658,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
