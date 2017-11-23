@@ -85,14 +85,14 @@
 <meta property="og:title" content="JVM 性能调优">
 <meta property="og:url" content="http://mawenxia.com/2017/06/23/JVM-性能调优/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="内存和GC原理 JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3    有关GC（垃圾收集）机制，可参考： http://www.jia">
+<meta property="og:description" content="内存和GC原理 JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-e8e64d340df221d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-11-23T06:29:21.000Z">
+<meta property="og:updated_time" content="2017-11-23T06:32:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM 性能调优">
-<meta name="twitter:description" content="内存和GC原理 JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3    有关GC（垃圾收集）机制，可参考： http://www.jia">
+<meta name="twitter:description" content="内存和GC原理 JAVA内存结构  堆、栈、永久区、程序计数器 一般需要优化的内存区为  堆 堆内存的构成  新生代、老年代新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -327,8 +327,9 @@
 <li><strong>JAVA内存结构</strong>  <em>堆</em>、<em>栈</em>、<em>永久区</em>、<em>程序计数器</em></li>
 <li><strong>一般需要优化的内存区为</strong>  <em>堆</em></li>
 <li><p><strong>堆内存的构成</strong>  <em>新生代</em>、<em>老年代</em><br><img src="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="堆内存结构"><br><em>新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3</em>  </p>
+<a id="more"></a>
 <blockquote>
-<p>有关GC（垃圾收集）机制，可参考： <a href="http://www.jianshu.com/p/5228e940cfd2" target="_blank" rel="noopener">http://www.jianshu.com/p/5228e940cfd2</a></p>
+<p>有关GC（垃圾收集）机制，可参考： <a href="http://www.mawenxia.com/2017/06/20/JVM-GC%EF%BC%88%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%EF%BC%89%E6%9C%BA%E5%88%B6/" target="_blank" rel="noopener">http://www.mawenxia.com/2017/06/20/JVM-GC%EF%BC%88%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%EF%BC%89%E6%9C%BA%E5%88%B6/</a></p>
 <ol>
 <li>JAVA new出一个对象ObjectA时，若它特别大，直接进入 <em>老年代</em> ，其他都进入 <em>新生代</em> 中的<em>eden</em>。经过一次GC之后。若 <em>新生代</em><br>中的对象还有引用指向ObjectA。它将进入 <em>新生代</em> 中的<br><em>survivor0</em> 。第二次GC时，若还存在指向ObjectA的引用，ObjectA将复制到 <em>survivor1</em> ，并清空 <em>survivor0 </em>。 <strong>这就是GC原理中的 <em>复制模式</em>，保证了有连续完整的整块内存来接收每一次回收后幸存对象。</strong></li>
 <li>在 <em>新生代</em> 中经过好几次的GC之后还没有被回收的对象，将进入 <em>老年代</em></li>
@@ -420,6 +421,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/12/Spring-Cloud-常用模块代码及测试步骤/" rel="prev" title="Spring Cloud 常用模块代码及测试步骤">
+                Spring Cloud 常用模块代码及测试步骤 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>

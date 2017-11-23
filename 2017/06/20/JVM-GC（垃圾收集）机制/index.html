@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="####垃圾收集机制  需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动">
+<meta name="description" content="垃圾收集机制 需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的Cla">
 <meta name="keywords" content="性能,JAVA基础,垃圾收集">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM GC（垃圾收集）机制">
 <meta property="og:url" content="http://mawenxia.com/2017/06/20/JVM-GC（垃圾收集）机制/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="####垃圾收集机制  需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。 垃圾收集算法：  Mark-Sweep 标记算法：">
+<meta property="og:description" content="垃圾收集机制 需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-23T06:29:06.000Z">
+<meta property="og:updated_time" content="2017-11-23T06:34:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM GC（垃圾收集）机制">
-<meta name="twitter:description" content="####垃圾收集机制  需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。 垃圾收集算法：  Mark-Sweep 标记算法：">
+<meta name="twitter:description" content="垃圾收集机制 需要被收集的垃圾： 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。 回收规则： 正向可达 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。">
 
 
 
@@ -320,11 +320,13 @@
       
 
       
-        <p>####垃圾收集机制</p>
-<ul>
+        <h2 id="垃圾收集机制"><a href="#垃圾收集机制" class="headerlink" title="垃圾收集机制"></a>垃圾收集机制</h2><ul>
 <li><strong>需要被收集的垃圾：</strong> 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。</li>
-<li><strong>回收规则：</strong> <strong><em>正向可达</em></strong> 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。</li>
-<li><strong>垃圾收集算法：</strong> <ul>
+<li><p><strong>回收规则：</strong> <strong><em>正向可达</em></strong> 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。</p>
+<a id="more"></a>
+</li>
+<li><p><strong>垃圾收集算法：</strong> </p>
+<ul>
 <li>Mark-Sweep 标记算法：没有被引用的对象一一标记出来，GC运行时进行清除。<em>缺点：清除后内存不连续、碎片化。 空和不空的内存块互相间隔着，若有一个比较大的对象进入时，有可能找不到可以存下它的连续整块内存。这时会触发fullGC，全部回收，压缩，再存下新对象。影响效率。</em></li>
 <li>Copying 复制算法：内存被平成两个连续的区域。永远有一个内存区是空着的，回收被使用的一块内存时，直接把存活对象全部拷贝到空着的一块内存区中，并清空本内存区。内存复制的效率很高，并保证了内存块的连续性。<em>缺点：内存浪费，永远只能用一半。</em><blockquote>
 <p>java堆内存的 <em>新生代</em> 中垃圾收集时用的是复制算法。新生代分成了三块内存区：Eden、 Survivor0、Survivor1。GC运行时按正向可达规则将Eden中存活对象复制到S0内存块中，并清除当前内存块，下一次GC时，将S0和Eden中存活的对象复制到S1中，清除Eden和S0，如此往复。内存大小比例为8：1 : 1。 因为对象创建时最初存放于eden 而90%以上的对象往往在方法结束后被回收，留下的很少，故S0和S1比例可远小于Eden。 ps:堆内存的性能优化方式可参考：</p>
@@ -380,8 +382,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/12/Spring-Cloud-常用模块代码及测试步骤/" rel="next" title="Spring Cloud 常用模块代码及测试步骤">
-                <i class="fa fa-chevron-left"></i> Spring Cloud 常用模块代码及测试步骤
+              <a href="/2017/05/16/HashMap源码笔记/" rel="next" title="HashMap源码笔记">
+                <i class="fa fa-chevron-left"></i> HashMap源码笔记
               </a>
             
           </div>
@@ -444,8 +446,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -525,6 +536,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾收集机制"><span class="nav-number">1.</span> <span class="nav-text">垃圾收集机制</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
