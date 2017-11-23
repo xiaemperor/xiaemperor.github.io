@@ -450,7 +450,8 @@
           <h2 id="内存和GC原理"><a href="#内存和GC原理" class="headerlink" title="内存和GC原理"></a>内存和GC原理</h2><ul>
 <li><strong>JAVA内存结构</strong>  <em>堆</em>、<em>栈</em>、<em>永久区</em>、<em>程序计数器</em></li>
 <li><strong>一般需要优化的内存区为</strong>  <em>堆</em></li>
-<li><p><strong>堆内存的构成</strong>  <em>新生代</em>、<em>老年代</em><br><img src="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="堆内存结构"><br><em>新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3</em>  </p>
+<li><strong>堆内存的构成</strong>  <em>新生代</em>、<em>老年代</em><br><img src="http://upload-images.jianshu.io/upload_images/7114162-e63821a54fceaeee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="堆内存结构"><br><em>新生代分为eden(伊甸园)、survivor0、survivor1（幸存者;分为两块，新生代中的GC使用的是复制模式，交替复制清空）。这三块的容量关系一般为8:1:1 。新生代和老年代的比例一般为1:3</em>  </li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/06/23/JVM-性能调优/#more" rel="contents">
@@ -576,7 +577,8 @@
         
           <h2 id="垃圾收集机制"><a href="#垃圾收集机制" class="headerlink" title="垃圾收集机制"></a>垃圾收集机制</h2><ul>
 <li><strong>需要被收集的垃圾：</strong> 1.没有引用指向的对象。2.两个对象互相引用，且没有外部引用指向他们。3. 多个对象环形引用，形成一个闭环，且没有外部引用指向他们。</li>
-<li><p><strong>回收规则：</strong> <strong><em>正向可达</em></strong> 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。</p>
+<li><strong>回收规则：</strong> <strong><em>正向可达</em></strong> 算法。从roots对象计算可以到达的对象都不是垃圾。root对象举例：main方法中的创建的所有对象；java虚拟机启动时的ClassLoader。</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/06/20/JVM-GC（垃圾收集）机制/#more" rel="contents">
