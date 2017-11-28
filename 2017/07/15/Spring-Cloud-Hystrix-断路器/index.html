@@ -85,15 +85,15 @@
 <meta property="og:title" content="Spring Cloud Hystrix 断路器">
 <meta property="og:url" content="http://mawenxia.com/2017/07/15/Spring-Cloud-Hystrix-断路器/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="本篇文章为Spring Cloud 常用模块代码及测试步骤的分支[Hystrix]部分。 先从几个概念开始，了解概念有助于对Hystrix的理解。 熔断、降级、限流的概念 雪崩效应分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级.  定义雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不">
+<meta property="og:description" content="本篇文章为Spring Cloud 常用模块代码及测试步骤的分支[Hystrix]部分。 先从几个概念开始，了解概念有助于对Hystrix的理解。 熔断、降级、限流的概念 雪崩效应分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级. 定义雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不可">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-0e8348131d3604a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-8b64217b27efe506.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-e2e6c4da4085e0d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-11-28T03:50:37.000Z">
+<meta property="og:updated_time" content="2017-11-28T03:58:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud Hystrix 断路器">
-<meta name="twitter:description" content="本篇文章为Spring Cloud 常用模块代码及测试步骤的分支[Hystrix]部分。 先从几个概念开始，了解概念有助于对Hystrix的理解。 熔断、降级、限流的概念 雪崩效应分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级.  定义雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不">
+<meta name="twitter:description" content="本篇文章为Spring Cloud 常用模块代码及测试步骤的分支[Hystrix]部分。 先从几个概念开始，了解概念有助于对Hystrix的理解。 熔断、降级、限流的概念 雪崩效应分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级. 定义雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不可">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7114162-0e8348131d3604a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -348,22 +348,23 @@
       
         <p>本篇文章为<a href="http://www.mawenxia.com/2017/07/12/Spring-Cloud-%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%AD%A5%E9%AA%A4/" target="_blank" rel="noopener">Spring Cloud 常用模块代码及测试步骤</a>的分支[Hystrix]部分。<br> 先从几个概念开始，了解概念有助于对Hystrix的理解。</p>
 <h4 id="熔断、降级、限流的概念"><a href="#熔断、降级、限流的概念" class="headerlink" title="熔断、降级、限流的概念"></a>熔断、降级、限流的概念</h4><ul>
-<li><p>雪崩效应<br>分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级.</p>
-<ul>
-<li><p><strong>定义</strong><br>雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不可用 逐渐放大 的过程<br>下图从上到下看，可以发现随着A不可用，慢慢的B服务还有CD服务都不可用了。<img src="http://upload-images.jianshu.io/upload_images/7114162-0e8348131d3604a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="雪崩效应"></p>
-</li>
-<li><p><strong>雪崩效应形成的原因</strong><br>我把服务雪崩的参与者简化为 服务提供者 和 服务调用者, 并将服务雪崩产生的过程分为以下三个阶段来分析形成的原因:<br>1.<strong>服务提供者不可用</strong><br>2.<strong>重试加大流量</strong><br>3.<strong>服务调用者不可用</strong></p>
+<li>雪崩效应<br>分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级.<ul>
+<li><strong>定义</strong><br>雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不可用 逐渐放大 的过程<br>下图从上到下看，可以发现随着A不可用，慢慢的B服务还有CD服务都不可用了。<img src="http://upload-images.jianshu.io/upload_images/7114162-0e8348131d3604a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="雪崩效应"></li>
+</ul>
 </li>
 </ul>
-<ol>
-<li><p><strong>服务提供者不可用原因</strong><br>服务雪崩的每个阶段都可能由不同的原因造成, 比如造成 服务不可用的原因有:<br><strong>硬件故障</strong>: 硬件故障可能为硬件损坏造成的服务器主机宕机, 网络硬件故障造成的服务提供者的不可访问.<br><strong>程序Bug</strong><br><strong>缓存击穿</strong>: 缓存击穿一般发生在缓存应用重启, 所有缓存被清空时,以及短时间内大量缓存失效时. 大量的缓存不命中, 使请求直击后端,造成服务提供者超负荷运行,引起服务不可用.<br><strong>用户大量请求</strong>: 在秒杀和大促开始前,如果准备不充分,用户发起大量请求也会造成服务提供者的不可用.</p>
-</li>
-<li><p><strong>重试加大流量</strong><br> <strong>用户重试</strong>：在服务提供者不可用后, 用户由于忍受不了界面上长时间的等待,而不断刷新页面甚至提交表单.<br> <strong>代码逻辑重试</strong>：服务调用端的会存在大量服务异常后的重试逻辑.</p>
-</li>
-<li><p><strong>服务调用者不可用</strong><br>当服务调用者使用 同步调用 时, 会产生大量的等待线程占用系统资源. 一旦线程资源被耗尽,服务调用者提供的服务也将处于不可用状态, 于是服务雪崩效应产生了.</p>
-</li>
-</ol>
-</li>
+<a id="more"></a> 
+<pre><code>-  __雪崩效应形成的原因__
+</code></pre><p>我把服务雪崩的参与者简化为 服务提供者 和 服务调用者, 并将服务雪崩产生的过程分为以下三个阶段来分析形成的原因:<br>1.<strong>服务提供者不可用</strong><br>2.<strong>重试加大流量</strong><br>3.<strong>服务调用者不可用</strong></p>
+<pre><code>1.   __服务提供者不可用原因__
+</code></pre><p>服务雪崩的每个阶段都可能由不同的原因造成, 比如造成 服务不可用的原因有:<br><strong>硬件故障</strong>: 硬件故障可能为硬件损坏造成的服务器主机宕机, 网络硬件故障造成的服务提供者的不可访问.<br><strong>程序Bug</strong><br><strong>缓存击穿</strong>: 缓存击穿一般发生在缓存应用重启, 所有缓存被清空时,以及短时间内大量缓存失效时. 大量的缓存不命中, 使请求直击后端,造成服务提供者超负荷运行,引起服务不可用.<br><strong>用户大量请求</strong>: 在秒杀和大促开始前,如果准备不充分,用户发起大量请求也会造成服务提供者的不可用.</p>
+<pre><code>2. __重试加大流量__
+    __用户重试__：在服务提供者不可用后, 用户由于忍受不了界面上长时间的等待,而不断刷新页面甚至提交表单.
+    __代码逻辑重试__：服务调用端的会存在大量服务异常后的重试逻辑.
+
+3. __服务调用者不可用__
+  当服务调用者使用 同步调用 时, 会产生大量的等待线程占用系统资源. 一旦线程资源被耗尽,服务调用者提供的服务也将处于不可用状态, 于是服务雪崩效应产生了.
+</code></pre><ul>
 <li><strong>应对策略</strong><br><strong>熔断</strong>：通过 超时机制使得不可用服务的调用快速失败<br><strong>限流</strong>：网关限流、用户交互限流、关闭重试、接口限流。<strong>在JAVA中实现接口限流可以用guava的RateLimiter，它实现了令牌桶算法和漏桶算法。</strong><br><strong>降级</strong>：调用服务线程池隔离、依赖服务分类(终止弱依赖服务)<br><strong>服务自动扩容</strong></li>
 </ul>
 <p>以上概念部分摘自 <a href="http://kaimingwan.com/post/jia-gou/shi-yong-hystrixwan-cheng-rong-duan-xian-liu-he-jiang-ji" target="_blank" rel="noopener">http://kaimingwan.com/post/jia-gou/shi-yong-hystrixwan-cheng-rong-duan-xian-liu-he-jiang-ji</a> </p>

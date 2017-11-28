@@ -344,48 +344,20 @@
 
       
         
-          
-            <p>本篇文章为<a href="http://www.mawenxia.com/2017/07/12/Spring-Cloud-%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%AD%A5%E9%AA%A4/" target="_blank" rel="noopener">Spring Cloud 常用模块代码及测试步骤</a>的分支[Hystrix]部分。<br> 先从几个概念开始，了解概念有助于对Hystrix的理解。</p>
+          <p>本篇文章为<a href="http://www.mawenxia.com/2017/07/12/Spring-Cloud-%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%AD%A5%E9%AA%A4/" target="_blank" rel="noopener">Spring Cloud 常用模块代码及测试步骤</a>的分支[Hystrix]部分。<br> 先从几个概念开始，了解概念有助于对Hystrix的理解。</p>
 <h4 id="熔断、降级、限流的概念"><a href="#熔断、降级、限流的概念" class="headerlink" title="熔断、降级、限流的概念"></a>熔断、降级、限流的概念</h4><ul>
-<li><p>雪崩效应<br>分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级.</p>
-<ul>
-<li><p><strong>定义</strong><br>雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不可用 逐渐放大 的过程<br>下图从上到下看，可以发现随着A不可用，慢慢的B服务还有CD服务都不可用了。<img src="http://upload-images.jianshu.io/upload_images/7114162-0e8348131d3604a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="雪崩效应"></p>
-</li>
-<li><p><strong>雪崩效应形成的原因</strong><br>我把服务雪崩的参与者简化为 服务提供者 和 服务调用者, 并将服务雪崩产生的过程分为以下三个阶段来分析形成的原因:<br>1.<strong>服务提供者不可用</strong><br>2.<strong>重试加大流量</strong><br>3.<strong>服务调用者不可用</strong></p>
+<li>雪崩效应<br>分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级.<ul>
+<li><strong>定义</strong><br>雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不可用 逐渐放大 的过程<br>下图从上到下看，可以发现随着A不可用，慢慢的B服务还有CD服务都不可用了。<img src="http://upload-images.jianshu.io/upload_images/7114162-0e8348131d3604a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="雪崩效应"></li>
+</ul>
 </li>
 </ul>
-<ol>
-<li><p><strong>服务提供者不可用原因</strong><br>服务雪崩的每个阶段都可能由不同的原因造成, 比如造成 服务不可用的原因有:<br><strong>硬件故障</strong>: 硬件故障可能为硬件损坏造成的服务器主机宕机, 网络硬件故障造成的服务提供者的不可访问.<br><strong>程序Bug</strong><br><strong>缓存击穿</strong>: 缓存击穿一般发生在缓存应用重启, 所有缓存被清空时,以及短时间内大量缓存失效时. 大量的缓存不命中, 使请求直击后端,造成服务提供者超负荷运行,引起服务不可用.<br><strong>用户大量请求</strong>: 在秒杀和大促开始前,如果准备不充分,用户发起大量请求也会造成服务提供者的不可用.</p>
-</li>
-<li><p><strong>重试加大流量</strong><br> <strong>用户重试</strong>：在服务提供者不可用后, 用户由于忍受不了界面上长时间的等待,而不断刷新页面甚至提交表单.<br> <strong>代码逻辑重试</strong>：服务调用端的会存在大量服务异常后的重试逻辑.</p>
-</li>
-<li><p><strong>服务调用者不可用</strong><br>当服务调用者使用 同步调用 时, 会产生大量的等待线程占用系统资源. 一旦线程资源被耗尽,服务调用者提供的服务也将处于不可用状态, 于是服务雪崩效应产生了.</p>
-</li>
-</ol>
-</li>
-<li><strong>应对策略</strong><br><strong>熔断</strong>：通过 超时机制使得不可用服务的调用快速失败<br><strong>限流</strong>：网关限流、用户交互限流、关闭重试、接口限流。<strong>在JAVA中实现接口限流可以用guava的RateLimiter，它实现了令牌桶算法和漏桶算法。</strong><br><strong>降级</strong>：调用服务线程池隔离、依赖服务分类(终止弱依赖服务)<br><strong>服务自动扩容</strong></li>
-</ul>
-<p>以上概念部分摘自 <a href="http://kaimingwan.com/post/jia-gou/shi-yong-hystrixwan-cheng-rong-duan-xian-liu-he-jiang-ji" target="_blank" rel="noopener">http://kaimingwan.com/post/jia-gou/shi-yong-hystrixwan-cheng-rong-duan-xian-liu-he-jiang-ji</a> </p>
-<h4 id="Hystrix-代码示例"><a href="#Hystrix-代码示例" class="headerlink" title="Hystrix 代码示例"></a>Hystrix 代码示例</h4><ul>
-<li><p>断路器demo</p>
-<pre><code>1. 启动注册中心 ``spring-cloud-03-hystrix-server``
-2.启动服务端 ``spring-cloud-03-hystrix-client``
-3.启动客户端 ``spring-cloud-03-hystrix-request-a``
-  __请求超时触发__：http://localhost:6001/hystrix-hello
-  返回：``----------执行降级策略------------``
-</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 配置的断路时间为2秒,但是调用的服务睡眠了3秒。进入降级策略</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"callHelloFailback"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">callHello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> restTemplate.getForObject(<span class="string">"http://client-service/hello"</span>, String.class);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">callHelloFailback</span><span class="params">()</span></span>&#123;</span><br><span class="line">	System.err.println(<span class="string">"----------执行降级策略------------"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"----------执行降级策略------------"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <strong>异常捕捉触发</strong>: <a href="http://localhost:6001/hystrix-handler" target="_blank" rel="noopener">http://localhost:6001/hystrix-handler</a><br>返回: <code>获取异常信息并可以做具体的降级处理</code></p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 异常捕获方式的断路器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"handlerFailback"</span>,  ignoreExceptions = &#123;BadRequestException.class&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">handler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"运行时异常..."</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 异常信息可传递到fallback方法中</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">handlerFailback</span><span class="params">(Throwable e)</span></span>&#123;</span><br><span class="line">	System.err.println(<span class="string">"异常信息: "</span> + e.getMessage());</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"获取异常信息并可以做具体的降级处理"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>单独API配置</strong>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 对单独API 配置断路由规则,不受配置文件中的配置参数影响</span></span><br><span class="line"><span class="comment"> * 如下,配置8秒读取超时,配置文件中的2秒将失效</span></span><br><span class="line"><span class="comment">    * 更多commandProperties信息:https://github.com/Netflix/Hystrix/wiki/Configuration </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@HystrixCommand</span>(</span><br><span class="line">		commandKey = <span class="string">"hiKey"</span>,</span><br><span class="line">		commandProperties = &#123;<span class="meta">@HystrixProperty</span>(name=<span class="string">"execution.isolation.thread.timeoutInMilliseconds"</span>, <span class="comment">/*KEY*/</span> value = <span class="string">"8000"</span> <span class="comment">/*VALUE*/</span>)&#125;,</span><br><span class="line">		fallbackMethod = <span class="string">"callHiFailback"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">callhi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			System.err.println(<span class="string">"--客户端调用-----"</span>);</span><br><span class="line">	<span class="keyword">return</span> restTemplate.getForObject(<span class="string">"http://client-service/hi"</span>, String.class);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">callHiFailback</span><span class="params">()</span></span>&#123;</span><br><span class="line">	System.err.println(<span class="string">"----------执行降级策略------------"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"----------执行降级策略------------"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="Hystrix-DashBoard-服务压力查看器"><a href="#Hystrix-DashBoard-服务压力查看器" class="headerlink" title="Hystrix DashBoard 服务压力查看器"></a>Hystrix DashBoard 服务压力查看器</h4><p>  1.在以上的Demo启动的基础上，启动 <code>spring-cloud-03-hystrix-dashboard</code><br>  2.访问 <a href="http://localhost:5001/hystrix" target="_blank" rel="noopener">http://localhost:5001/hystrix</a><br><img src="http://upload-images.jianshu.io/upload_images/7114162-8b64217b27efe506.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DashBoard"><br>3.点击进入后可查看所有的请求情况<br><img src="http://upload-images.jianshu.io/upload_images/7114162-e2e6c4da4085e0d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="监控界面"></p>
-<h4 id="Hystrix-Turbine-集群服务压力查看器"><a href="#Hystrix-Turbine-集群服务压力查看器" class="headerlink" title="Hystrix Turbine 集群服务压力查看器"></a>Hystrix Turbine 集群服务压力查看器</h4><p>  1.在以上的基础上启动 <code>spring-cloud-03-hystrix-request-b</code>  和 集群收集模块turbine <code>spring-cloud-03-hystrix-turbine</code><br>这时在dashboard中填入的地址为<a href="http://localhost:3000/turbine.stream" target="_blank" rel="noopener">http://localhost:3000/turbine.stream</a><br>点击监控。分别请求 <code>spring-cloud-03-hystrix-request-a</code> 和 <code>spring-cloud-03-hystrix-request-b</code> 的API之后。会发现在监控平台上的Hosts变为了2.两个客户端的请求都能被监控了。</p>
-<hr>
-<p>END</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/15/Spring-Cloud-Hystrix-断路器/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
