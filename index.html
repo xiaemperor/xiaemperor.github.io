@@ -345,7 +345,7 @@
       
         
           <h2 id="Session-sticky"><a href="#Session-sticky" class="headerlink" title="Session sticky"></a>Session sticky</h2><p>  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。</p>
-<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul>
+<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ul>
 <li>只需要改nginx配置，不需要修改应用代码</li>
 <li>负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的</li>
 <li>可以支持web-server水平扩展（session同步法是不行的，受内存限制）</li>
