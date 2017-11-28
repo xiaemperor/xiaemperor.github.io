@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Session sticky  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。 优点： 只需要改nginx配置，不需要修改应用代码 负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的 可以">
+<meta name="description" content="Session sticky  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。  优点：  1231.只需要改nginx配置，不需要修改应用代码2.负载均衡，只要hash属性是均匀的，多台web-server的负">
 <meta name="keywords" content="微服务,cache">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Session 共享方案总结">
 <meta property="og:url" content="http://mawenxia.com/2017/11/28/Session-共享方案总结/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="Session sticky  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。 优点： 只需要改nginx配置，不需要修改应用代码 负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的 可以支持web-server水平扩展（session同步法是不行的，受内存限制）">
+<meta property="og:description" content="Session sticky  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。  优点：  1231.只需要改nginx配置，不需要修改应用代码2.负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的3.可以支持web-server水平扩展（session同步法是不行的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-28T09:17:27.000Z">
+<meta property="og:updated_time" content="2017-11-28T09:27:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Session 共享方案总结">
-<meta name="twitter:description" content="Session sticky  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。 优点： 只需要改nginx配置，不需要修改应用代码 负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的 可以支持web-server水平扩展（session同步法是不行的，受内存限制）">
+<meta name="twitter:description" content="Session sticky  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。  优点：  1231.只需要改nginx配置，不需要修改应用代码2.负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的3.可以支持web-server水平扩展（session同步法是不行的">
 
 
 
@@ -343,32 +343,37 @@
 
       
         <h2 id="Session-sticky"><a href="#Session-sticky" class="headerlink" title="Session sticky"></a>Session sticky</h2><p>  对访问的ip进行hash。然后通过Nginx 跳转固定的web-server。这样保证了同一个用户访问的Server保持不变，session自然不会消失。</p>
-<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ul>
-<li>只需要改nginx配置，不需要修改应用代码</li>
-<li>负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的</li>
-<li>可以支持web-server水平扩展（session同步法是不行的，受内存限制）</li>
+<ul>
+<li>优点：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.只需要改nginx配置，不需要修改应用代码</span><br><span class="line">2.负载均衡，只要hash属性是均匀的，多台web-server的负载是均衡的</span><br><span class="line">3.可以支持web-server水平扩展（session同步法是不行的，受内存限制）</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <a id="more"></a>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>单个Server宕机或重启之后，部分session会消失，该部分用户需要重新登录<br>session本身就有有效期，即使部分用户需要重新登录，事实上也是可以接受的，所以缺点也没有那么明显</li>
+<ul>
+<li>缺点  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">   1.单个Server宕机或重启之后，部分session会消失，该部分用户需要重新登录</span><br><span class="line">session本身就有有效期，即使部分用户需要重新登录，事实上也是可以接受的，所以缺点也没有那么明显</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h2 id="Session-复制"><a href="#Session-复制" class="headerlink" title="Session 复制"></a>Session 复制</h2><p> session在各web-server间复制，保证每一个web-server有全部的用户session</p>
-<h4 id="优点：-1"><a href="#优点：-1" class="headerlink" title="优点："></a>优点：</h4><ul>
-<li>实现方便，tomcat有集成插件。配置即可，建议访问量不大的小型系统使用<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点:"></a>缺点:</h4></li>
-<li>互相复制增加了网络内网的开销，每台web-server都存了全部session，数据冗余严重，内存占用大。</li>
+<ul>
+<li><p>优点：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.实现方便，tomcat有集成插件。配置即可，建议访问量不大的小型系统使用</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>缺点:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.互相复制增加了网络内网的开销，每台web-server都存了全部session，数据冗余严重，内存占用大。</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h2 id="cookie中存储Session"><a href="#cookie中存储Session" class="headerlink" title="cookie中存储Session"></a>cookie中存储Session</h2><p>Session加密后存储在cookie中，这样Session就存放在了客户端，服务端无状态化。</p>
-<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ul>
-<li>安全性差。用户数据容易泄露。只适合敏感度不高的系统</li>
+<ul>
+<li>缺点：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.安全性差。用户数据容易泄露。只适合敏感度不高的系统</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h2 id="Session-cache"><a href="#Session-cache" class="headerlink" title="Session cache"></a>Session cache</h2><p>将所有登录信息存在redis的集群中，每一次的用户请求都去redis cache 中获取用户登录状态。</p>
-<h4 id="优点：-2"><a href="#优点：-2" class="headerlink" title="优点："></a>优点：</h4><ul>
-<li>安全</li>
-<li>跟web-server无关，不管是宕机还是更新重启都不影响已登录用户</li>
-<li>方便水平扩展<h4 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h4></li>
-<li>增加运维成本</li>
-<li>增加了一次额外的后端调用</li>
-<li>需要增加相应的代码</li>
+<ul>
+<li><p>优点：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 安全</span><br><span class="line">2. 跟web-server无关，不管是宕机还是更新重启都不影响已登录用户</span><br><span class="line">3. 方便水平扩展</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>缺点：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 增加运维成本</span><br><span class="line">2. 增加了一次额外的后端调用</span><br><span class="line">3. 需要增加相应的代码</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 
       
@@ -591,7 +596,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-sticky"><span class="nav-number">1.</span> <span class="nav-text">Session sticky</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">1.0.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">1.0.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-复制"><span class="nav-number">2.</span> <span class="nav-text">Session 复制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.0.2.</span> <span class="nav-text">缺点:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cookie中存储Session"><span class="nav-number">3.</span> <span class="nav-text">cookie中存储Session</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">3.0.1.</span> <span class="nav-text">缺点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-cache"><span class="nav-number">4.</span> <span class="nav-text">Session cache</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-2"><span class="nav-number">4.0.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点：-1"><span class="nav-number">4.0.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-sticky"><span class="nav-number">1.</span> <span class="nav-text">Session sticky</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-复制"><span class="nav-number">2.</span> <span class="nav-text">Session 复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cookie中存储Session"><span class="nav-number">3.</span> <span class="nav-text">cookie中存储Session</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-cache"><span class="nav-number">4.</span> <span class="nav-text">Session cache</span></a></li></ol></div>
             
 
           </div>
