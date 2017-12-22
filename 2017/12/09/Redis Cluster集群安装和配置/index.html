@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="zookeeper," />
+  <meta name="keywords" content="nosql,redis," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="zookeeper集群中需要通过FastLeader选举算法。Paxos算法 来选取头结点。由于这个特性，某个结点故障时，要耗费时间重新进行header选取，故zk在分布式CAP理论中保证的是CP(一致性和分区容错性)。而spring cloud的eureka集群保证的是AP(高可用和分区容错性)  一致（所有节点数据">
-<meta name="keywords" content="zookeeper">
+<meta name="description" content="安装条件：Cluster集群模式至少要3主3从。生产环境中，建议六台，主从也进行分离。本例中使用的是单台虚拟机  Redis安装 下载redis-3.X.tar.gz  注意，3.0以上才有集群方式的支持。 下载后解压  1# tar -zxvf redis-3.2.9.tar.gz -C /usr/local/">
+<meta name="keywords" content="nosql,redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="zookeeper相关知识点">
-<meta property="og:url" content="http://mawenxia.com/2017/07/01/zookeeper相关知识点/index.html">
+<meta property="og:title" content="Redis Cluster集群安装和配置">
+<meta property="og:url" content="http://mawenxia.com/2017/12/09/Redis Cluster集群安装和配置/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="zookeeper集群中需要通过FastLeader选举算法。Paxos算法 来选取头结点。由于这个特性，某个结点故障时，要耗费时间重新进行header选取，故zk在分布式CAP理论中保证的是CP(一致性和分区容错性)。而spring cloud的eureka集群保证的是AP(高可用和分区容错性)  一致（所有节点数据一致），有头（一个leader，所有客户端连接操作通过leader完成），数据">
+<meta property="og:description" content="安装条件：Cluster集群模式至少要3主3从。生产环境中，建议六台，主从也进行分离。本例中使用的是单台虚拟机  Redis安装 下载redis-3.X.tar.gz  注意，3.0以上才有集群方式的支持。 下载后解压  1# tar -zxvf redis-3.2.9.tar.gz -C /usr/local/">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T08:45:31.000Z">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-1db93586967502f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-4ac68f7066e6fdbc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-12-22T03:24:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zookeeper相关知识点">
-<meta name="twitter:description" content="zookeeper集群中需要通过FastLeader选举算法。Paxos算法 来选取头结点。由于这个特性，某个结点故障时，要耗费时间重新进行header选取，故zk在分布式CAP理论中保证的是CP(一致性和分区容错性)。而spring cloud的eureka集群保证的是AP(高可用和分区容错性)  一致（所有节点数据一致），有头（一个leader，所有客户端连接操作通过leader完成），数据">
+<meta name="twitter:title" content="Redis Cluster集群安装和配置">
+<meta name="twitter:description" content="安装条件：Cluster集群模式至少要3主3从。生产环境中，建议六台，主从也进行分离。本例中使用的是单台虚拟机  Redis安装 下载redis-3.X.tar.gz  注意，3.0以上才有集群方式的支持。 下载后解压  1# tar -zxvf redis-3.2.9.tar.gz -C /usr/local/">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7114162-1db93586967502f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://mawenxia.com/2017/07/01/zookeeper相关知识点/"/>
+  <link rel="canonical" href="http://mawenxia.com/2017/12/09/Redis Cluster集群安装和配置/"/>
 
 
 
 
 
-  <title>zookeeper相关知识点 | 马文侠的主页</title>
+  <title>Redis Cluster集群安装和配置 | 马文侠的主页</title>
   
 
 
@@ -253,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2017/07/01/zookeeper相关知识点/">
+    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2017/12/09/Redis Cluster集群安装和配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="马文侠">
@@ -270,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">zookeeper相关知识点</h1>
+          <h1 class="post-title" itemprop="name headline">Redis Cluster集群安装和配置</h1>
         
 
         <div class="post-meta">
@@ -282,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-01T22:37:13+08:00">
-                2017-07-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T07:16:14+08:00">
+                2017-12-09
               </time>
             
 
@@ -305,8 +308,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式</span>
+                  <a href="/categories/环境安装/" itemprop="url" rel="index">
+                    <span itemprop="name">环境安装</span>
                   </a>
                 </span>
 
@@ -343,40 +346,60 @@
 
       
         <ul>
-<li><p>zookeeper集群中需要通过<strong>FastLeader选举算法。Paxos算法</strong> 来选取头结点。由于这个特性，某个结点故障时，要耗费时间重新进行header选取，故zk在分布式CAP理论中保证的是CP(一致性和分区容错性)。而spring cloud的eureka集群保证的是AP(高可用和分区容错性)</p>
-</li>
-<li><p><strong>一致（所有节点数据一致），有头（一个leader，所有客户端连接操作通过leader完成），数据数（树结构）</strong></p>
+<li>安装条件：Cluster集群模式至少要3主3从。生产环境中，建议六台，主从也进行分离。本例中使用的是单台虚拟机</li>
+</ul>
+<h2 id="Redis安装"><a href="#Redis安装" class="headerlink" title="Redis安装"></a>Redis安装</h2><ul>
+<li>下载redis-3.X.tar.gz  注意，3.0以上才有集群方式的支持。</li>
+<li>下载后解压  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># tar -zxvf redis-3.2.9.tar.gz -C /usr/local/</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <a id="more"></a>
-<h2 id="应用场景："><a href="#应用场景：" class="headerlink" title="应用场景："></a>应用场景：</h2><ol>
-<li><p>配置一致。集群的配置文件统一管理。在zookeeper上记录配置信息，zookeeper上的记录更改的时候，会通知所有在其上面注册过的系统（观察者模式—observer）.达到统一管理的目的；</p>
+<ul>
+<li><p>进入到解压后的redis根目录下编译</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cd /usr/local/redis-3.2.9</span><br><span class="line"># make</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>HA（High Availability）高可用集群启动时，master节点在zookeeper上注册（分为持久化节点，临时性节点–在连接断开后消失，此场景用临时性节点）–active，有另外一台服务器监听该master节点的状态—standBy，一旦发现其消失（由于建立的是临时性节点，一开始的master断开后，该节点会消失），立刻补位，把自己注册到zookeeper上变为master提供服务，挂掉的节点再次启动时，发现已经存在master，自己变为预备服务器—standBy，监控状态master的状态。客户端请求时先在zookeeper中找active的节点，然后再请求该节点。该业务即为主备动态切换；</p>
+<li><p>进入到src下安装</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cd /usr/loca/redis-3.2.9/src</span><br><span class="line"># make install</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>pub/sub发布者，订阅者。发通知，观察者模式。</p>
+<li><p>每台节点机器都按上面流程安装完成。</p>
 </li>
-<li><p>nameserver: rocketMQ在3.2版本之前使用zookeeper来实现服务发现</p>
+<li>单节点模式到此只要配置conf文件即可启动了，本篇主要是集群模式。下面做集群的配置</li>
+</ul>
+<h2 id="Cluster集群配置"><a href="#Cluster集群配置" class="headerlink" title="Cluster集群配置"></a>Cluster集群配置</h2><p>先启动所有节点，再组成集群的过程</p>
+<ul>
+<li><p>创建redis-cluster文件夹</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p /usr/local/redis-cluster</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>load balance负载均衡。</p>
+<li><p>在创建的redis-cluster文件夹下建立各节点文件夹。本例把端口号作为了文件名</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir 7001; mkdir 7002.. mkdir 7006 有几个创建几个。本例3m3s。六个</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>分布式锁</p>
+<li><p>复制redis.conf 文件到各节点文件夹下</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># cp /usr/local/redis-3.2.9/redis.conf /usr/local/redis-cluster/7001/</span><br><span class="line">...</span><br><span class="line">六个都要 .为了改配置方便。可先只复制一个。其他的文件只需要改端口</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<h2 id="zookeeper-底层API中的关键点"><a href="#zookeeper-底层API中的关键点" class="headerlink" title="zookeeper 底层API中的关键点"></a>zookeeper 底层API中的关键点</h2><ul>
-<li><p>zookeeper  watch事件是一次性的。watcher是持续性的。  watch的特性：一次性、客户端串行执行、轻量。</p>
+<li><p>配置节点文件夹下的配置文件。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># vim /usr/local/redis-cluster/7001/redis.conf</span><br><span class="line">daemonize yes #守护线程开启</span><br><span class="line">port 7001 #端口号设置</span><br><span class="line">bind 192.168.1.20 #必须要绑定本机IP</span><br><span class="line">dir /usr/local/redis-cluster/7001/ #数据文件存放位置。注意配置对应的地址</span><br><span class="line">cluster-enabled yes #启动集群模式</span><br><span class="line">cluster-config-file nodes7001.conf</span><br><span class="line">cluster-node-timeout 5000</span><br><span class="line">appendonly yes</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>一次性：对于ZK的watcher，zookeeper有watch事件，是一次性触发的，发生改变时，通知监听的客户端，监听事件消失，需要每次重新设置监听。</p>
+<li><p>配置好的文件复制到7002.7003.. 各节点文件夹下。复制完一定要修改为本节点的端口号 涉及的配置：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">port 700* </span><br><span class="line">dir /usr/local/redis-cluster/700*/</span><br><span class="line">cluster-config-file nodes700*.conf</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>客户端串行执行：watch的回调是顺序执行的。需要做回调。</p>
+<li><p>集群运行脚本需要ruby。请安装</p>
 </li>
-<li><p>轻量：watchedEvent是整个watch通知机制的最小单元，只包含通知状态，事件类型和节点路径三部分。不会有具体的内容，比如nodeDataChanged事件，zookeeper只会通知客户端指定节点的数据发生了改变，需要客户端自己去获取具体的内容。</p>
+<li><p>分别启动6个redis实例,并查看是否启动</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># /usr/local/redis-3.2.9/src/redis-server /usr/local/redis-cluster/7001/redis.conf</span><br><span class="line"># /usr/local/redis-3.2.9/src/redis-server /usr/local/redis-cluster/7002/redis.conf</span><br><span class="line"> ...</span><br><span class="line"># ps -el | grep redis</span><br></pre></td></tr></table></figure>
 </li>
-<li>zookeeper安装过程中遇到的小坑：<blockquote>
-<p>外网访问不通：1.防火墙。2./etc/hosts下的localhost删除。</p>
-</blockquote>
+<li><p>执行redis-trib.rb命令。让各节点组成集群关系</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cd /usr/local/redis-3.2.9/src/</span><br><span class="line"># ./redis-trib.rb create --replicas 1 192.168.1.20:7001 192.168.1.20:7002 192.168.1.20:7003 192.168.1.20:7004 192.168.1.20:7005 192.168.1.20:7006</span><br></pre></td></tr></table></figure>
+<p> <strong>友情提示</strong>:  当出现集群无法构建时，删除700*文件夹下的临时数据文件。再次启动每个节点redis，然后再构建。</p>
+</li>
+<li><p>搭建完成，验证</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># /usr/local/redis-3.2.9/src/redis-cli -c -h 192.168.1.20 -p 7001 //可连接任何一个节点查看</span><br><span class="line"># cluster info //如下图所示。6节点集群搭建完成</span><br></pre></td></tr></table></figure>
+<p>   <img src="http://upload-images.jianshu.io/upload_images/7114162-1db93586967502f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="集群信息"></p>
+</li>
+<li><p>3主3从在建立的时候会自动选取<br> <img src="http://upload-images.jianshu.io/upload_images/7114162-4ac68f7066e6fdbc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="各节点状态"></p>
 </li>
 </ul>
+<hr>
+<p>END</p>
 
       
     </div>
@@ -423,7 +446,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/zookeeper/" rel="tag"># zookeeper</a>
+            <a href="/tags/nosql/" rel="tag"># nosql</a>
+          
+            <a href="/tags/redis/" rel="tag"># redis</a>
           
         </div>
       
@@ -436,8 +461,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/30/RabbitMQ安装/" rel="next" title="RabbitMQ安装">
-                <i class="fa fa-chevron-left"></i> RabbitMQ安装
+              <a href="/2017/11/28/Session-共享方案总结/" rel="next" title="Session 共享方案总结">
+                <i class="fa fa-chevron-left"></i> Session 共享方案总结
               </a>
             
           </div>
@@ -445,10 +470,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/12/Spring-Cloud-常用模块代码及测试步骤/" rel="prev" title="Spring Cloud 常用模块代码及测试步骤">
-                Spring Cloud 常用模块代码及测试步骤 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -600,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景："><span class="nav-number">1.</span> <span class="nav-text">应用场景：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper-底层API中的关键点"><span class="nav-number">2.</span> <span class="nav-text">zookeeper 底层API中的关键点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis安装"><span class="nav-number">1.</span> <span class="nav-text">Redis安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cluster集群配置"><span class="nav-number">2.</span> <span class="nav-text">Cluster集群配置</span></a></li></ol></div>
             
 
           </div>

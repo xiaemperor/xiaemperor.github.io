@@ -252,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2017/12/09/Redis-安装、Cluster集群配置/">
+    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2017/12/09/Redis Cluster集群安装和配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="马文侠">
@@ -271,7 +271,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/09/Redis-安装、Cluster集群配置/" itemprop="url">Redis 安装、Cluster集群配置</a></h1>
+                <a class="post-title-link" href="/2017/12/09/Redis Cluster集群安装和配置/" itemprop="url">Redis Cluster集群安装和配置</a></h1>
         
 
         <div class="post-meta">
@@ -354,7 +354,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/Redis-安装、Cluster集群配置/#more" rel="contents">
+            <a class="btn" href="/2017/12/09/Redis Cluster集群安装和配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -505,6 +505,152 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/11/28/Session-共享方案总结/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2017/10/22/Redis数据类型和操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="马文侠">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=3c4e049cc1cec3fd8b3ea073eeb3b302/6159252dd42a2834b1c7cf5b59b5c9ea15cebf79.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="马文侠的主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/22/Redis数据类型和操作/" itemprop="url">Redis数据类型和操作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T11:20:22+08:00">
+                2017-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/缓存技术/" itemprop="url" rel="index">
+                    <span itemprop="name">缓存技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><h4 id="String-–最常用的数据类型-String-除了保存字符串之外，可保存很多特殊类型，序列化之后可存图片、对象、数值"><a href="#String-–最常用的数据类型-String-除了保存字符串之外，可保存很多特殊类型，序列化之后可存图片、对象、数值" class="headerlink" title="String –最常用的数据类型  String 除了保存字符串之外，可保存很多特殊类型，序列化之后可存图片、对象、数值"></a>String –最常用的数据类型  <code>String 除了保存字符串之外，可保存很多特殊类型，序列化之后可存图片、对象、数值</code></h4><h4 id="Hash-–key-Object-存储对象"><a href="#Hash-–key-Object-存储对象" class="headerlink" title="Hash –key Object  存储对象"></a>Hash –key Object  <code>存储对象</code></h4><h4 id="List-–链表-以链表形式存储String"><a href="#List-–链表-以链表形式存储String" class="headerlink" title="List –链表  以链表形式存储String"></a>List –链表  <code>以链表形式存储String</code></h4><h4 id="Set-–集合-以集合形式存储String"><a href="#Set-–集合-以集合形式存储String" class="headerlink" title="Set –集合  以集合形式存储String"></a>Set –集合  <code>以集合形式存储String</code></h4><h4 id="ZSet-–有序集合-以score大小顺序排列"><a href="#ZSet-–有序集合-以score大小顺序排列" class="headerlink" title="ZSet –有序集合 以score大小顺序排列"></a>ZSet –有序集合 <code>以score大小顺序排列</code></h4>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/22/Redis数据类型和操作/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1590,155 +1736,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2017/02/22/Spring源码导入IDEA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="马文侠">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=3c4e049cc1cec3fd8b3ea073eeb3b302/6159252dd42a2834b1c7cf5b59b5c9ea15cebf79.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="马文侠的主页">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/02/22/Spring源码导入IDEA/" itemprop="url">Spring源码导入IDEA</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-22T16:58:59+08:00">
-                2017-02-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA基础/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <ul>
-<li>git clone <a href="https://github.com/spring-projects/spring-framework.git" target="_blank" rel="noopener">https://github.com/spring-projects/spring-framework.git</a> </li>
-<li>源码使用gradle构建。Mac下安装gradle最简单方式: brew install gradle .就一句话够了。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/02/22/Spring源码导入IDEA/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1793,7 +1790,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1804,7 +1801,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1815,7 +1812,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
