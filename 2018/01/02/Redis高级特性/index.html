@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="nosql,redis," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文涉及到的命令和数据类型请参见: Redis数据类型和基本操作 命令 keys * (可模糊匹配) 123456789&amp;gt; set name mawenxiaOK&amp;gt; set age 18OK&amp;gt; keys *1) &amp;quot;age&amp;quot;2) &amp;qu">
+<meta name="keywords" content="nosql,redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis高级特性">
+<meta property="og:url" content="http://mawenxia.com/2018/01/02/Redis高级特性/index.html">
+<meta property="og:site_name" content="马文侠的主页">
+<meta property="og:description" content="本文涉及到的命令和数据类型请参见: Redis数据类型和基本操作 命令 keys * (可模糊匹配) 123456789&amp;gt; set name mawenxiaOK&amp;gt; set age 18OK&amp;gt; keys *1) &amp;quot;age&amp;quot;2) &amp;quot;name&amp;quot;&amp;gt; keys n*  //模糊匹配1) &amp;quot;name&amp;quot;  exists 判断k">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-b28a3bd190099693.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-8320d4a6f470e07d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-03T10:08:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis高级特性">
+<meta name="twitter:description" content="本文涉及到的命令和数据类型请参见: Redis数据类型和基本操作 命令 keys * (可模糊匹配) 123456789&amp;gt; set name mawenxiaOK&amp;gt; set age 18OK&amp;gt; keys *1) &amp;quot;age&amp;quot;2) &amp;quot;name&amp;quot;&amp;gt; keys n*  //模糊匹配1) &amp;quot;name&amp;quot;  exists 判断k">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7114162-b28a3bd190099693.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '马文侠'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mawenxia.com/2018/01/02/Redis高级特性/"/>
+
+
+
+
+
+  <title>Redis高级特性 | 马文侠的主页</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">马文侠的主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">博圣生物软件工程师</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mawenxia.com/2018/01/02/Redis高级特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="马文侠">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=3c4e049cc1cec3fd8b3ea073eeb3b302/6159252dd42a2834b1c7cf5b59b5c9ea15cebf79.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="马文侠的主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis高级特性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T22:00:40+08:00">
+                2018-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/缓存技术/" itemprop="url" rel="index">
+                    <span itemprop="name">缓存技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文涉及到的命令和数据类型请参见: <a href="http://www.mawenxia.com/2017/10/22/Redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Redis数据类型和基本操作</a></p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
+<li><p><strong>keys *</strong> (可模糊匹配)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; set name mawenxia</span><br><span class="line">OK</span><br><span class="line">&gt; set age 18</span><br><span class="line">OK</span><br><span class="line">&gt; keys *</span><br><span class="line">1) &quot;age&quot;</span><br><span class="line">2) &quot;name&quot;</span><br><span class="line">&gt; keys n*  //模糊匹配</span><br><span class="line">1) &quot;name&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>exists</strong> 判断key是否存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; exists name</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>设置过期时间<strong>expire</strong>，查看过期时间<strong>ttl</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; expire name 3600</span><br><span class="line">(integer) 1</span><br><span class="line">&gt; ttl name</span><br><span class="line">(integer) 3598</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取消过期时间<strong>persist</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; persist name</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>select</strong> 选择数据库。一个redis实例，数据库为0到15 一共16个，默认进入的是0数据库。可根据业务逻辑规则，或系统分类进行划分，存储在不同的库中</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;SELECT 1</span><br><span class="line">OK</span><br><span class="line">&gt;127.0.0.1:6379[1]&gt; keys *    //这边多了一个[1]</span><br><span class="line">(empty list or set)         //会发现之前的name和age都不在这里</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>move</strong> 移动数据到其他库中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379[1]&gt; set sex nan    //在库[1]中存入sex</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[1]&gt; keys *</span><br><span class="line">1) &quot;sex&quot;</span><br><span class="line">127.0.0.1:6379[1]&gt; move sex 0   //移动sex到库[0]中</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379[1]&gt; select 0         //切换到[0]数据库</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get sex             //获取sex</span><br><span class="line">&quot;nan&quot;                               //数据库[0]中已存在该数据</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>randomkey</strong> 随机返回数据库中的一个key  使用场景：抽奖。</p>
+</li>
+<li><strong>rename</strong> 重命名key</li>
+<li><strong>echo</strong> 打印命令</li>
+<li><strong>dbsize</strong> 查看数据库key的数量</li>
+<li><strong>info</strong>  数据库信息查看 (CPU、内存、主从、集群、Client等信息) 。可用于监控平台</li>
+<li><strong>config get *</strong> 查看配置信息。可用于监控平台</li>
+<li><strong>flushdb</strong> 清空当前数据库  <strong>flushall</strong> 清空所有数据库</li>
+</ul>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><p>由于redis速度极快，一个外部用户一秒内可以进行15万次的密码尝试，这意味着需要设定一个非常强大的密码来防止暴力破解，但是再复杂的密码，在大量的尝试下还是会被hit。建议加入计数器，超过数量之后，不允许再登录，锁定一段时间。</p>
+<ul>
+<li>密码设置<blockquote>
+<p> vi redis.conf  找得到 requirepass <em>*</em> 设置密码</p>
+<pre><code>设置密码之后。需要先使用 __auth ***__ 登录
+</code></pre></blockquote>
+</li>
+</ul>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><ul>
+<li><p>使用<strong>multi</strong> 打开事务。执行完所有数据操作后，使用 <strong>exec</strong> 执行生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt; multi</span><br><span class="line">OK</span><br><span class="line">set p1 1</span><br><span class="line">QUEUED</span><br><span class="line">&gt; set p2 2</span><br><span class="line">QUEUED</span><br><span class="line">&gt; set p3 3</span><br><span class="line">QUEUED</span><br><span class="line">&gt; exec</span><br><span class="line">1) OK</span><br><span class="line">2) OK</span><br><span class="line">3) OK</span><br><span class="line">&gt; keys p*</span><br><span class="line">1) &quot;p1&quot;</span><br><span class="line">2) &quot;p3&quot;</span><br><span class="line">3) &quot;p2&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<strong>discard</strong> 取消事务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; multi</span><br><span class="line">OK</span><br><span class="line">&gt; set p4 4</span><br><span class="line">QUEUED</span><br><span class="line">&gt; set p5 5</span><br><span class="line">QUEUED</span><br><span class="line">&gt; discard</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; keys p*</span><br><span class="line">1) &quot;p1&quot;</span><br><span class="line">2) &quot;p3&quot;</span><br><span class="line">3) &quot;p2&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>注意。目前redis还不能保证操作的原子性</strong>，可能部分回滚失败，比如事务中间出现报错的时候。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt; get name</span><br><span class="line">&quot;mawenxia&quot;</span><br><span class="line">&gt; get age</span><br><span class="line">&quot;19&quot;</span><br><span class="line">&gt; multi    //开启事务</span><br><span class="line">OK</span><br><span class="line">&gt; incr age    //年龄+1</span><br><span class="line">QUEUED</span><br><span class="line">&gt; incr name    //名字+1</span><br><span class="line">QUEUED</span><br><span class="line">&gt; exec      //执行</span><br><span class="line">1) (integer) 20    //年龄+1成功</span><br><span class="line">2) (error) ERR value is not an integer or out of range  //名字+1报错</span><br><span class="line">&gt; get age</span><br><span class="line">&quot;20&quot;    //年龄+1成功。说明事务的回滚失败</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Redis-JavaAPI"><a href="#Redis-JavaAPI" class="headerlink" title="Redis JavaAPI"></a>Redis JavaAPI</h2><ul>
+<li>单实例下的redis是单线程的。</li>
+<li>单节点java操作redis一般使用Jedis </li>
+<li><p>在redis cluster 集群模式下，需要使用sharedJedis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * ShardJedis的测试类</span><br><span class="line"> */</span><br><span class="line">public class ShardJedisTest &#123;</span><br><span class="line"></span><br><span class="line">    private ShardedJedisPool sharedPool;</span><br><span class="line"></span><br><span class="line">    @Before</span><br><span class="line">    public void initJedis()&#123;</span><br><span class="line">        //Jedis池配置</span><br><span class="line">        JedisPoolConfig config =new JedisPoolConfig();</span><br><span class="line">        config.setTestOnBorrow(true);</span><br><span class="line">        String hostA = &quot;127.0.0.1&quot;;</span><br><span class="line">        int portA = 6381;</span><br><span class="line">        String hostB = &quot;127.0.0.1&quot;;</span><br><span class="line">        int portB = 6382;</span><br><span class="line">        List&lt;JedisShardInfo&gt; jdsInfoList =new ArrayList&lt;JedisShardInfo&gt;(2);</span><br><span class="line">        JedisShardInfo infoA = new JedisShardInfo(hostA, portA);</span><br><span class="line">        JedisShardInfo infoB = new JedisShardInfo(hostB, portB);</span><br><span class="line">        jdsInfoList.add(infoA);</span><br><span class="line">        jdsInfoList.add(infoB);</span><br><span class="line">        sharedPool =new ShardedJedisPool(config, jdsInfoList);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void testSetKV() throws InterruptedException &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            for (int i=0;i&lt;50;i++)&#123;</span><br><span class="line">                String key = &quot;test&quot;+i;</span><br><span class="line">                ShardedJedis jedisClient = sharedPool.getResource();</span><br><span class="line">                System.out.println(key+&quot;:&quot;+jedisClient.getShard(key).getClient().getHost()+&quot;:&quot;+jedisClient.getShard(key).getClient().getPort());</span><br><span class="line">                System.out.println(jedisClient.set(key,Math.random()+&quot;&quot;));</span><br><span class="line">                jedisClient.close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;catch (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其他操作数据的API和命令行的操作基本一致，可参考Redis的基本命令来查找JedisAPI。</p>
+</li>
+<li><p>Jedis事务操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//开启事务</span><br><span class="line">Transaction tx = jedis.multi(); </span><br><span class="line">//执行操作1.2.3...</span><br><span class="line">act1...</span><br><span class="line">act2...</span><br><span class="line">act3...</span><br><span class="line">//提交。并接收操作结果</span><br><span class="line">List&lt;Object&gt; resList = tx.exec();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Jedis Pool  使用连接池提高性能.操作结束必须返还连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SharedJedis sj = pool.getResource();</span><br><span class="line">...各类操作</span><br><span class="line">//操作结束后返还连接</span><br><span class="line">pool.returnResourceObject(sj);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Redis复杂查询技巧"><a href="#Redis复杂查询技巧" class="headerlink" title="Redis复杂查询技巧"></a>Redis复杂查询技巧</h2><p>比如做一个类似 select * from user where age = 18 and sex=’m’的操作</p>
+<ul>
+<li>关键是设计一个合理的存储结构。存储结构如下。说明：把Set当做查询的条件存储，只存放数据的id。然后根据id取全部数据</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">数据类型</th>
+<th style="text-align:right">key (field)</th>
+<th style="text-align:right">data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">Hash</td>
+<td style="text-align:right">id</td>
+<td style="text-align:right">{“name”:”zhangsan”,”age”,18,”sex”:”m”}…</td>
+</tr>
+<tr>
+<td style="text-align:right">Set</td>
+<td style="text-align:right">userage18</td>
+<td style="text-align:right">key1,key2,key3…</td>
+</tr>
+<tr>
+<td style="text-align:right">Set</td>
+<td style="text-align:right">usersexm</td>
+<td style="text-align:right">key1,key2…</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Hash类型的中存储全部user数据。set 类型的“userage18”中存储所有年龄为18的用户的id。同理，“usersexm”存储性别为”m”的用户id</li>
+<li>查询时，只要查询Set中符合条件的id，然后根据id取出需要的user数据即可</li>
+<li><p>Set集合有”sinter”取交集，“sunion”取并集命令。来取出符合”age=18 and sex=m” 或 “age=18 or and sex=m” 的用户id</p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/7114162-b28a3bd190099693.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据结构"></p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/7114162-8320d4a6f470e07d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="sinter sunion 查询到用户key"></p>
+</li>
+<li><p>最后根据key来获取用户信息。</p>
+</li>
+<li>这么做的好处：如果直接取出全部user数据在代码中判断符合条件的数据，很可能因为数据量过大，导致内存溢出。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>哎呦，还不错？请我喝杯咖啡吧</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpaypic.png" alt="马文侠 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipaypic.png" alt="马文侠 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nosql/" rel="tag"># nosql</a>
+          
+            <a href="/tags/redis/" rel="tag"># redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/26/工业设计和软件架构之间的关系/" rel="next" title="工业设计和软件架构之间的关系">
+                <i class="fa fa-chevron-left"></i> 工业设计和软件架构之间的关系
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=3c4e049cc1cec3fd8b3ea073eeb3b302/6159252dd42a2834b1c7cf5b59b5c9ea15cebf79.jpg"
+                alt="马文侠" />
+            
+              <p class="site-author-name" itemprop="name">马文侠</p>
+              <p class="site-description motion-element" itemprop="description">技术就像存款,平时可能不用.但需要时,一定要有!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xiaemperor" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:maven163@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全"><span class="nav-number">2.</span> <span class="nav-text">安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">3.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-JavaAPI"><span class="nav-number">4.</span> <span class="nav-text">Redis JavaAPI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis复杂查询技巧"><span class="nav-number">5.</span> <span class="nav-text">Redis复杂查询技巧</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">马文侠</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
