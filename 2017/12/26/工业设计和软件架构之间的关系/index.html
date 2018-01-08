@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="手工制造时代 &amp;amp; 二进制01、汇编时代 缺点：依赖人，费用高昂，产品不稳定，无法量产  流水线的出现&amp;amp;各类开发语言出现 优点：     依赖机器（语言），设计精良的流水线（语言）让规模化生产得以实现   缺点：     生产线（单语言）无法适应产品的更新换代和多系列产品的生产。往往需要换">
+<meta name="description" content="为刚接触分布式的工程师解释模块化、服务化很困难，故找了一个汽车流水线里的例子来更形象的对比。 手工制造时代 &amp;amp; 二进制01、汇编时代 缺点：依赖人，费用高昂，产品不稳定，无法量产  流水线的出现&amp;amp;各类开发语言出现 优点：     依赖机器（语言），设计精良的流水线（语言）让规模化生产得以">
 <meta name="keywords" content="对比">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工业设计和软件架构之间的关系">
 <meta property="og:url" content="http://mawenxia.com/2017/12/26/工业设计和软件架构之间的关系/index.html">
 <meta property="og:site_name" content="马文侠的主页">
-<meta property="og:description" content="手工制造时代 &amp;amp; 二进制01、汇编时代 缺点：依赖人，费用高昂，产品不稳定，无法量产  流水线的出现&amp;amp;各类开发语言出现 优点：     依赖机器（语言），设计精良的流水线（语言）让规模化生产得以实现   缺点：     生产线（单语言）无法适应产品的更新换代和多系列产品的生产。往往需要换掉整条生产线（重构）">
+<meta property="og:description" content="为刚接触分布式的工程师解释模块化、服务化很困难，故找了一个汽车流水线里的例子来更形象的对比。 手工制造时代 &amp;amp; 二进制01、汇编时代 缺点：依赖人，费用高昂，产品不稳定，无法量产  流水线的出现&amp;amp;各类开发语言出现 优点：     依赖机器（语言），设计精良的流水线（语言）让规模化生产得以实现   缺点：     生产线（单语言）无法适应产品的更新换代和多系列产品的生产。往往需要换掉">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://i.img16888.com/upload/Images/2017/08/2017080505514456367.jpg">
-<meta property="og:updated_time" content="2017-12-27T09:01:26.000Z">
+<meta property="og:updated_time" content="2018-01-08T01:46:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工业设计和软件架构之间的关系">
-<meta name="twitter:description" content="手工制造时代 &amp;amp; 二进制01、汇编时代 缺点：依赖人，费用高昂，产品不稳定，无法量产  流水线的出现&amp;amp;各类开发语言出现 优点：     依赖机器（语言），设计精良的流水线（语言）让规模化生产得以实现   缺点：     生产线（单语言）无法适应产品的更新换代和多系列产品的生产。往往需要换掉整条生产线（重构）">
+<meta name="twitter:description" content="为刚接触分布式的工程师解释模块化、服务化很困难，故找了一个汽车流水线里的例子来更形象的对比。 手工制造时代 &amp;amp; 二进制01、汇编时代 缺点：依赖人，费用高昂，产品不稳定，无法量产  流水线的出现&amp;amp;各类开发语言出现 优点：     依赖机器（语言），设计精良的流水线（语言）让规模化生产得以实现   缺点：     生产线（单语言）无法适应产品的更新换代和多系列产品的生产。往往需要换掉">
 <meta name="twitter:image" content="http://i.img16888.com/upload/Images/2017/08/2017080505514456367.jpg">
 
 
@@ -322,7 +322,8 @@
       
 
       
-        <h2 id="手工制造时代-amp-二进制01、汇编时代"><a href="#手工制造时代-amp-二进制01、汇编时代" class="headerlink" title="手工制造时代 &amp; 二进制01、汇编时代"></a>手工制造时代 &amp; 二进制01、汇编时代</h2><ul>
+        <p>为刚接触分布式的工程师解释模块化、服务化很困难，故找了一个汽车流水线里的例子来更形象的对比。</p>
+<h2 id="手工制造时代-amp-二进制01、汇编时代"><a href="#手工制造时代-amp-二进制01、汇编时代" class="headerlink" title="手工制造时代 &amp; 二进制01、汇编时代"></a>手工制造时代 &amp; 二进制01、汇编时代</h2><ul>
 <li>缺点：依赖人，费用高昂，产品不稳定，无法量产</li>
 </ul>
 <h2 id="流水线的出现-amp-各类开发语言出现"><a href="#流水线的出现-amp-各类开发语言出现" class="headerlink" title="流水线的出现&amp;各类开发语言出现"></a>流水线的出现&amp;各类开发语言出现</h2><ul>
@@ -342,8 +343,9 @@
 <p><img src="http://i.img16888.com/upload/Images/2017/08/2017080505514456367.jpg" alt="模块化平台"></p>
 <ul>
 <li>更细化的模块化：发动机(B38、B48、B68)</li>
-<li>本质：模块化生产、共用平台、提高生产效率、降低成本</li>
-<li>宣传语：高度轻量化</li>
+<li>经常在评测新闻里看到说“和**车同平台”，其实就是各档次的车共用部分流水线的情况。</li>
+<li>本质：模块化生产、共用平台、提高生产效率、降低成本。软件系统也是如此</li>
+<li>相信看完这节，软件系统的服务化，模块化的概念，更加的具象了。</li>
 </ul>
 
       
