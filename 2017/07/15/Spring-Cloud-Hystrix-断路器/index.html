@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="微服务,SpringCloud," />
+  <meta name="keywords" content="SpringCloud,微服务," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="本篇文章为Spring Cloud 常用模块代码及测试步骤的分支[Hystrix]部分。 先从几个概念开始，了解概念有助于对Hystrix的理解。 熔断、降级、限流的概念 雪崩效应分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服">
-<meta name="keywords" content="微服务,SpringCloud">
+<meta name="keywords" content="SpringCloud,微服务">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Cloud Hystrix 断路器">
 <meta property="og:url" content="http://mawenxia.com/2017/07/15/Spring-Cloud-Hystrix-断路器/index.html">
@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-0e8348131d3604a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-8b64217b27efe506.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-e2e6c4da4085e0d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-11-28T04:01:02.000Z">
+<meta property="og:updated_time" content="2018-01-10T07:26:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud Hystrix 断路器">
 <meta name="twitter:description" content="本篇文章为Spring Cloud 常用模块代码及测试步骤的分支[Hystrix]部分。 先从几个概念开始，了解概念有助于对Hystrix的理解。 熔断、降级、限流的概念 雪崩效应分布式系统中经常会出现某个基础服务不可用造成整个系统不可用的情况, 这种现象被称为服务雪崩效应. 为了应对服务雪崩, 一种常见的做法是手动服务降级. 定义雪崩效应：服务提供者 的不可用导致 服务调用者 的不可用,并将不可">
@@ -370,7 +370,7 @@
 <p>以上概念部分摘自 <a href="http://kaimingwan.com/post/jia-gou/shi-yong-hystrixwan-cheng-rong-duan-xian-liu-he-jiang-ji" target="_blank" rel="noopener">http://kaimingwan.com/post/jia-gou/shi-yong-hystrixwan-cheng-rong-duan-xian-liu-he-jiang-ji</a> </p>
 <h4 id="Hystrix-代码示例"><a href="#Hystrix-代码示例" class="headerlink" title="Hystrix 代码示例"></a>Hystrix 代码示例</h4><ul>
 <li><p>断路器demo</p>
-<pre><code>1. 启动注册中心 ``spring-cloud-03-hystrix-server``
+<pre><code>1. 启动注册中心 ``eureka-a``
 2.启动服务端 ``spring-cloud-03-hystrix-client``
 3.启动客户端 ``spring-cloud-03-hystrix-request-a``
   __请求超时触发__：http://localhost:6001/hystrix-hello
@@ -432,9 +432,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/微服务/" rel="tag"># 微服务</a>
-          
             <a href="/tags/SpringCloud/" rel="tag"># SpringCloud</a>
+          
+            <a href="/tags/微服务/" rel="tag"># 微服务</a>
           
         </div>
       

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="马文侠的主页">
 <meta property="og:description" content="背景：某天一朋友突然找我说，想第一时间知道一个N线小城的人才网发布的某职位信息。自己不停的查也没有那个空，问我有没有认识该地人才市场的人。突然职业习惯就来了。“机器能搞定的事，绝不用手工。技术能搞定的事，绝不靠关系” 。于是有了这个程序。权当熟悉一下Py。共三个核心部分，信息爬取、发送邮件、Crontab定时任务">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-08T01:32:13.000Z">
+<meta property="og:updated_time" content="2018-01-10T02:39:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python爬虫--实时职位订阅">
 <meta name="twitter:description" content="背景：某天一朋友突然找我说，想第一时间知道一个N线小城的人才网发布的某职位信息。自己不停的查也没有那个空，问我有没有认识该地人才市场的人。突然职业习惯就来了。“机器能搞定的事，绝不用手工。技术能搞定的事，绝不靠关系” 。于是有了这个程序。权当熟悉一下Py。共三个核心部分，信息爬取、发送邮件、Crontab定时任务">
@@ -355,7 +355,7 @@
 <li><p>开启定时跑脚本服务</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;  crontab -e  //进入vi编辑</span><br><span class="line">&gt;  */10 * * * * /Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5 /Users/sam/Documents/Python/Mytest0.0.1/Main.py</span><br><span class="line">//填入Python运行环境和脚本位置。保存退出</span><br><span class="line">//出现以下提示，表示定时任务完成</span><br><span class="line">&gt; crontab: installing new crontab</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>定时任务中的五个<em>号分别表示 分钟、小时、日、月、星期。我这边的命令  </em>/10表示每十分钟运行一次。指定完运行时间，直接跟上命令即可</p>
+<li><p>定时任务中的五个<em>号分别表示 分钟、小时、日、月、星期。我这边的命令  </em>/10表示每十分钟运行一次。<code>0 */1 * * *</code> 即为每小时的0分钟执行。指定完运行时间，直接跟上命令即可</p>
 </li>
 <li>这里有两个坑， <strong>坑1:</strong> python命令形式运行脚本，如果里面有引用工程下其他模块的话，会找不到路径，所以我这边使用了Main.py。把用到的模块都引入进来了。<strong>坑2:</strong> 如果本地有多个python版本的话，最好指定路径。比如我这边直接指定了3.5</li>
 </ul>
