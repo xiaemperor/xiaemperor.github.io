@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-b28a3bd190099693.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7114162-8320d4a6f470e07d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-01-03T10:08:53.000Z">
+<meta property="og:updated_time" content="2018-01-12T05:54:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis高级特性">
 <meta name="twitter:description" content="本文涉及到的命令和数据类型请参见: Redis数据类型和基本操作 命令 keys * (可模糊匹配) 123456789&amp;gt; set name mawenxiaOK&amp;gt; set age 18OK&amp;gt; keys *1) &amp;quot;age&amp;quot;2) &amp;quot;name&amp;quot;&amp;gt; keys n*  //模糊匹配1) &amp;quot;name&amp;quot;  exists 判断k">
@@ -454,6 +454,11 @@
 </li>
 <li>这么做的好处：如果直接取出全部user数据在代码中判断符合条件的数据，很可能因为数据量过大，导致内存溢出。</li>
 </ul>
+<h2 id="分布式系统中的应用"><a href="#分布式系统中的应用" class="headerlink" title="分布式系统中的应用"></a>分布式系统中的应用</h2><ul>
+<li><strong>setnx</strong> 可作为分布式锁使用。对指定的key，线程获取锁时进行setnx 如果能设置成功，即获得锁。操作结束删除。如果未结束。其他线程setnx将失败。 </li>
+<li><strong>incr incrby</strong>  可作为各系统的主键生成器，既保证了主键的唯一性，还保证了主键的连续性，利于数据的合并及查找。</li>
+<li><strong>list  push 和pop</strong>  可作为消息队列使用</li>
+</ul>
 
       
     </div>
@@ -679,7 +684,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全"><span class="nav-number">2.</span> <span class="nav-text">安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">3.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-JavaAPI"><span class="nav-number">4.</span> <span class="nav-text">Redis JavaAPI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis复杂查询技巧"><span class="nav-number">5.</span> <span class="nav-text">Redis复杂查询技巧</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全"><span class="nav-number">2.</span> <span class="nav-text">安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">3.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-JavaAPI"><span class="nav-number">4.</span> <span class="nav-text">Redis JavaAPI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis复杂查询技巧"><span class="nav-number">5.</span> <span class="nav-text">Redis复杂查询技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式系统中的应用"><span class="nav-number">6.</span> <span class="nav-text">分布式系统中的应用</span></a></li></ol></div>
             
 
           </div>
