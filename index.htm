@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+    <title>宋小科创节-拼图小游戏</title>
+
+    <link rel="stylesheet" type="text/css" media="screen and  (max-device-width:410px)" href="css/mobile.css" />
+    <link rel="stylesheet" type="text/css" media="screen and (min-width:410px) and (max-device-width:1500px)" href="css/index.css" />
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/index.js"></script>
+</head>
+<body class="flowDisplay">
+    <div id="head">
+        <div class="flowDisplayStart">
+            <div id="icon">
+                <img src="pic/logo.png" id="userIcon">
+            </div>
+            <div id="title">
+                <p>宋小科创节-拼图小游戏</p>
+            </div>
+        </div>
+        <!-- <div id="navBar" class="flowDisplay">
+            <div class="flowDisplay">
+                <p class="selectFont">宫格模式：</p>
+                <div class="selectDiv">
+                    <select>
+                        <option value="9">简单</option>
+                        <option value="16">中级</option>
+                        <option value="25">困难</option>
+                    </select>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div id="body1">
+        <div id="zstp">
+            <div><p>目标图片</p></div>
+            <div id="targetPicDiv">
+            <img id="targetPic"/>
+            </div>
+        </div>
+        <div id="container"></div>
+        <div id="phb">
+
+        </div>
+    </div>
+    <div class="flowDisplay" id = "bottomBar">
+        <div id="showSteps" class="flowDisplay">当前移动步数为：<span>0</span></div>
+        <button id="reset" class="button">重置</button>
+        <button id="finish" class="button" onclick="checkOnly()">完成</button>
+        <!--<div id="voice"></div>-->
+    </div>
+
+    <div id="myModal" class="loginBox">
+        <h2>拼图小游戏</h2>
+        <form action="">
+            <div class="item">
+                <input id="nickName" type="text" required>
+                <label for="">玩家昵称</label>
+            </div>
+            <!--<div class="item">-->
+            <!--<input type="password" required>-->
+            <!--<label for="">password</label>-->
+            <!--</div>-->
+            <button id="beginBtn" class="btn">开始游戏
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span></button>
+        </form>
+    </div>
+
+</body>
+</html>

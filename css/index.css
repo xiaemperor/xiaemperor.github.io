@@ -1,0 +1,350 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    flex-direction: column;
+}
+p{
+    text-align: center;
+}
+
+.flowDisplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flowDisplayStart{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#head {
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    margin-top:20px;
+    width: 800px;
+}
+
+#navBar {
+    margin-top:20px;
+    height: 50px;
+    width: 100%;
+}
+
+#userIcon {
+}
+#icon{
+    margin-left: 10px;
+}
+
+
+#title{
+    height: 100%;
+    font-size: 1.5em;
+    margin:20px 120px 20px 118px;
+}
+
+
+#zstp{
+    width: 300px;
+    height: 300px;
+    margin-top: 50px;
+    margin-right: 50px;
+}
+
+#targetPic{
+    width: 300px;
+    height: 300px;
+}
+
+#phb{
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+.selectFont {
+    color: #aaa;
+}
+
+.selectDiv {
+    margin-right: 40px;
+    width: 110px;
+    height: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ccc;
+    position: relative;
+}
+
+.tableHead{
+    width:300px;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+select{
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 1em;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-left: 25px;
+    font-size: 0.85em;
+}
+
+.selectDiv:after{
+    content: "";
+    width: 14px;
+    height: 8px;
+    background: url(../pic/select.png) no-repeat center;
+    background-size: 35px 35px;
+    position: absolute;
+    right: 15px;
+    top: 40%;
+    pointer-events: none;
+}
+#body1{
+    display: flex;
+}
+#container {
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    margin-top:20px;
+    width: 600px;
+    height: 600px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.box {
+    background-color: #ddd6c1;
+    font-size: 2.5em;
+    position: absolute;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+    /*border-radius: 0.5em;*/
+}
+
+.box:hover {
+    color: #2d92af;
+}
+
+#specialBox {
+    visibility: hidden;
+}
+
+#bottomBar {
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    margin-top:20px;
+    height: 60px;
+    width: 800px;
+}
+
+.button {
+    height: 40px;
+    width: 140px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 0.25em;
+    background-color: #ddd6c1;
+    color: white;
+    margin-left: 100px;
+}
+
+.button:hover{
+    color: #2d92af;    
+}
+
+.button:active {
+    background-color: #2d92af;
+    color: white;    
+}
+
+.tabletd{
+    border: 1px solid;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+.thh{
+    border:1px solid;
+}
+.tPic{
+    border:1px solid;
+    width: 75px;
+}
+
+.thNum{
+    border:1px solid;width: 36px;
+}
+.thPlayer{
+    border:1px solid;width: 100px;
+}
+
+
+
+.loginBox {
+    display: none;
+    width: 360px;
+    height: 324px;
+    background-color: white;
+    margin: 100px auto;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px 0 rgba(0, 0, 0, .6);
+    padding: 40px;
+    box-sizing: border-box;
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+    position:absolute;
+}
+
+
+input,
+button {
+    background: transparent;
+    border: 0;
+    outline: none;
+}
+
+h2 {
+    text-align: center;
+    color: #333536;
+    margin-bottom: 30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.item {
+    height: 45px;
+    border-bottom: 1px solid black;
+    margin-bottom: 60px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.item input {
+    width: 100%;
+    height: 100%;
+    color: black;
+    padding-top: 20px;
+    box-sizing: border-box;
+}
+
+.item input:focus+label,
+.item input:valid+label {
+    top: 0px;
+    font-size: 1.2em;
+}
+
+.item label {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    transition: all 0.5s linear;
+}
+
+.btn {
+    padding: 10px 20px;
+    margin-top: 30px;
+    color: #fc0707;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    left: 35%;
+}
+
+.btn:hover {
+    border-radius: 5px;
+    color: black;
+    background: green;
+    /*box-shadow: 0 0 1px 0 #fc0707,*/
+    /*0 0 5px 0 #fc0707,*/
+    /*0 0 10px 0 #fc0707,*/
+    /*0 0 15px 0 #fc0707;*/
+    transition: all 1s linear;
+}
+
+.btn>span {
+    position: absolute;
+}
+
+.btn>span:nth-child(1) {
+    width: 100%;
+    height: 2px;
+    background: -webkit-linear-gradient(left, transparent, green);
+    left: -100%;
+    top: 0px;
+    animation: line1 1s linear infinite;
+}
+
+@keyframes line1 {
+
+    50%,
+    100% {
+        left: 100%;
+    }
+}
+
+.btn>span:nth-child(2) {
+    width: 2px;
+    height: 100%;
+    background: -webkit-linear-gradient(top, transparent, green);
+    right: 0px;
+    top: -100%;
+    animation: line2 1s 0.25s linear infinite;
+}
+
+@keyframes line2 {
+
+    50%,
+    100% {
+        top: 100%;
+    }
+}
+
+.btn>span:nth-child(3) {
+    width: 100%;
+    height: 2px;
+    background: -webkit-linear-gradient(left, green, transparent);
+    left: 100%;
+    bottom: 0px;
+    animation: line3 1s 0.75s linear infinite;
+}
+
+@keyframes line3 {
+
+    50%,
+    100% {
+        left: -100%;
+    }
+}
+
+.btn>span:nth-child(4) {
+    width: 2px;
+    height: 100%;
+    background: -webkit-linear-gradient(top, transparent,green);
+    left: 0px;
+    top: 100%;
+    animation: line4 1s 1s linear infinite;
+}
+
+@keyframes line4 {
+
+    50%,
+    100% {
+        top: -100%;
+    }
+}
