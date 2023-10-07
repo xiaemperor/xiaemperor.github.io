@@ -35,6 +35,8 @@ p{
 }
 
 #userIcon {
+    width: 60%;
+    height: 80%;
 }
 #icon{
     margin-left: 10px;

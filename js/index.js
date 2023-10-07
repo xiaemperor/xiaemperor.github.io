@@ -428,12 +428,5 @@ $(document).ready(function() {
     //检查
     // loadPhb();
     runTest();
-    var name =  window.sessionStorage.getItem('pt_nick_name', name);
-    if(name == "" || name == null || name == undefined){ // "",null,undefined
-        //唤起窗口输入昵称
-        pullWindow();
-        return;
-    }
-
 
 });
